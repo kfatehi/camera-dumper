@@ -7,9 +7,25 @@ require 'hornetseye_xorg'
 
 include Hornetseye
 
-camera = V4L2Input.new '/dev/video0' do |modes|
-  modes.each_with_index { |mode,i| puts "#{i+1}: #{mode}" }
-  modes[ STDIN.readline.to_i - 1 ]
+puts "Setting up Xbox camera"
+
+xbox_camera = V4L2Input.new '/dev/video1' do |modes|
+  modes[ 1 ]
 end
 
-X11Display.show { camera.read }
+Thread.new do
+  X11Display.show { xbox_camera.read }
+end
+
+puts "Setting up HD camera"
+
+hd_camera = V4L2Input.new '/dev/video0' do |modes|
+  modes[ 3 ]
+end
+
+Thread.new do
+  X11Display.show { hd_camera.read }
+end
+
+
+STDIN.gets
