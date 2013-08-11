@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler'
+Bundler.setup
+require 'hornetseye_v4l2'
+require 'hornetseye_xorg'
+
+include Hornetseye
+
+camera = V4L2Input.new '/dev/video0' do |modes|
+  modes.each_with_index { |mode,i| puts "#{i+1}: #{mode}" }
+  modes[ STDIN.readline.to_i - 1 ]
+end
+
+X11Display.show { camera.read }
