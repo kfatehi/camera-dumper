@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.0.9)
     hornetseye-frame (1.0.0)
       malloc (~> 1.1)
       multiarray (~> 1.0)
@@ -13,8 +14,14 @@ GEM
       malloc (~> 1.1)
       multiarray (~> 1.0)
     malloc (1.4.0)
+    method_source (0.8.2)
     multiarray (1.0.1)
       malloc (~> 1.1)
+    pry (0.9.12.2)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    slop (3.4.6)
 
 PLATFORMS
   ruby
@@ -22,3 +29,4 @@ PLATFORMS
 DEPENDENCIES
   hornetseye-v4l2
   hornetseye-xorg
+  pry
