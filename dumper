@@ -1,21 +1,58 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby 
+# We start with the "shebang" standing for Hash Bang or "#" "!"
+# It tells UNIX what program can interpret this EXECUTABLE
+# /usr/bin/env is a path to the file.
+# On the hard disk, in the folder "usr", then inside that, in "bin",
+# there is another EXECUTABLE. We say use that and pass the argument: ruby
+# env will know who ruby is if ruby's around and the EXECUTABLE ruby
+# will know how to read this ... that's my message to UNIX to help it
+# understand this file.
+
+# Anyway you just learned some of the bash shell scripting
+# language and fundamentals of UNIX all because of verbose comments
+# about one line.
+
+# Entering ruby land please wait
+
+# `require` loads a library once. 
 require 'rubygems'
+# RubyGems sets up your gem environment
+# This is anything you `gem install`d [from rubygems.org]
+
+# We get 1 gem manually with `gem install`, this one:
 require 'bundler'
+# But this became crazy what with all the great interoperability of gems
+# So we take another approach with long-term projects, but this is so
+# easy that I do it for anything that uses more than 1 library
+# That is to defined in our Gemfile our dependencies.
+
+# Bundler.require would automate it, but I want to show you the specific
+# require, so I will just setup Bundler, making the Gemfile gems
+# available in `require`'s scope
 Bundler.setup
+# Now they, too, can be `require`'d
 require 'hornetseye_v4l2'
 require 'hornetseye_xorg'
 
+# Bring all defined methods and constants into scope
 include Hornetseye
 
+# Put a String onto Standard Output
 puts "Setting up Xbox camera"
 
+# Magic happening
 xbox_camera = V4L2Input.new '/dev/video1' do |modes|
-  modes[ 1 ]
+  modes[ 1 ] # Select mode 1
 end
 
+# Create a thread to display the camera output stream
 Thread.new do
-  X11Display.show { xbox_camera.read }
+  X11Display.show { xbox_camera.read } # more magic
 end
+
+# Why create a thread? Because I have another camera and I want to keep
+# writing ruby. In other words I don't want to be blocked, I want to
+# keep giving instructions
 
 puts "Setting up HD camera"
 
@@ -24,8 +61,12 @@ hd_camera = V4L2Input.new '/dev/video0' do |modes|
 end
 
 Thread.new do
-  X11Display.show { hd_camera.read }
+  X11Display.show { hd_camera.read } # and more magic
 end
 
-
+# Now I want to block.
+# A nice way is to wait for a String on the Standard Input
 STDIN.gets
+
+# you sent a string, process is going down, objects and threads are
+# garbage collected automatically
