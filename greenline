@@ -10,7 +10,7 @@ include Hornetseye
 
 HIGH = 6.0
 LOW = 0.75
-input = V4L2Input.new '/dev/video1'
+input = V4L2Input.new '/dev/video0'
 w, h = input.width, input.height
 X11Display.show do
   img = input.read_ubyte
